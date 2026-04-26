@@ -180,17 +180,14 @@
   <div class="card">
     <span class="section-label">Operator / Labor</span>
     <div class="toggle-group">
-      <button class="toggle active" id="op-none" onclick="setOpMode('none')">None</button>
-      <button class="toggle" id="op-hours" onclick="setOpMode('hours')">By Hours — $60/hr</button>
-      <button class="toggle" id="op-minimums" onclick="setOpMode('minimums')">By Minimums — $120 each</button>
+      <button class="toggle active" id="labor-none" onclick="setToggle('labor','none')">None</button>
+      <button class="toggle" id="labor-min" onclick="setToggle('labor','min')">Minimum — $120</button>
+      <button class="toggle" id="labor-hr" onclick="setToggle('labor','hr')">By Hour — $60/hr</button>
     </div>
-    <div id="op-hours-row" style="display:none">
-      <input class="input" id="opHours" type="number" min="0" step="0.5" placeholder="Enter hours" style="max-width:180px" oninput="update()">
-    </div>
-    <div class="qty-row" id="op-minimums-row" style="display:none">
+    <div class="qty-row" id="labor-qty-row" style="display:none">
       <span class="qty-label">Qty:</span>
-      <input class="qty-input" id="opMinQty" type="number" min="1" step="1" value="1" oninput="update()">
-      <span class="qty-label">minimums ($120 each)</span>
+      <input class="qty-input" id="laborQty" type="number" min="1" step="1" value="1" oninput="update()">
+      <span class="qty-label" id="labor-qty-label"></span>
     </div>
   </div>
 
@@ -221,30 +218,27 @@
     machine: { half: 150, day: 250, week: 1000 },
     trailer: { half: 60, day: 120, week: 500 },
     combo: { day: 350, week: 1400 },
+    labor: { min: 120, hr: 60 },
     fuel: 50, opMin: 120, opHr: 60, driveHr: 30,
   };
   const qtyLabels = {
     machine: { half: 'half days', day: 'full days', week: 'weeks' },
     trailer: { half: 'half days', day: 'full days', week: 'weeks' },
     combo: { day: 'days', week: 'weeks' },
+    labor: { min: 'minimums', hr: 'hours' },
   };
-  const state = { machine: 'none', trailer: 'none', combo: 'none', op: 'none' };
+  const state = { machine: 'none', trailer: 'none', combo: 'none', labor: 'none' };
 
   document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-  function setOpMode(val) {
-    state.op = val;
-    ['none','hours','minimums'].forEach(v => document.getElementById(`op-${v}`).classList.toggle('active', v === val));
-    document.getElementById('op-hours-row').style.display = val === 'hours' ? 'block' : 'none';
-    document.getElementById('op-minimums-row').style.display = val === 'minimums' ? 'flex' : 'none';
-    update();
-  }
-
-
   function setToggle(group, val) {
     state[group] = val;
-    const opts = group === 'combo' ? ['none','day','week'] : ['none','half','day','week'];
-    opts.forEach(v => document.getElementById(`${group}-${v}`).classList.toggle('active', v === val));
+    const opts = {
+      combo: ['none','day','week'],
+      labor: ['none','min','hr'],
+    };
+    const groupOpts = opts[group] || ['none','half','day','week'];
+    groupOpts.forEach(v => document.getElementById(`${group}-${v}`).classList.toggle('active', v === val));
     const qtyRow = document.getElementById(`${group}-qty-row`);
     if (val === 'none') {
       qtyRow.style.display = 'none';
@@ -281,15 +275,13 @@
     if (document.getElementById('fuelWash').checked)
       items.push({ label: 'Mini X Fuel & Wash', amt: RATES.fuel });
 
-    if (state.op === 'hours') {
-      const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
-      if (opHrs > 0) {
-        const opRate = Math.max(opHrs * RATES.opHr, RATES.opMin);
-        items.push({ label: `Operator/Labor (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
-      }
-    } else if (state.op === 'minimums') {
-      const qty = getQty('opMinQty');
-      items.push({ label: `Operator/Labor (${qty} day minimum${qty !== 1 ? 's' : ''} × $${RATES.opMin})`, amt: qty * RATES.opMin });
+    if (state.labor !== 'none') {
+      const qty = getQty('laborQty');
+      const rate = RATES.labor[state.labor];
+      const label = state.labor === 'hr'
+        ? `Operator/Labor (${qty} hr${qty !== 1 ? 's' : ''} × $${rate})`
+        : `Operator/Labor (${qty} ${qtyLabels.labor[state.labor]} × $${rate})`;
+      items.push({ label, amt: rate * qty });
     }
 
     const driveHrs = parseFloat(document.getElementById('driveHours').value) || 0;
