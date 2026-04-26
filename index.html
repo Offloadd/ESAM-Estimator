@@ -16,155 +16,84 @@
     color: #1a2332;
   }
 
-  .page { max-width: 580px; margin: 0 auto; }
+  .page { max-width: 600px; margin: 0 auto; }
 
-  /* Header */
   .header {
     background: linear-gradient(135deg, #1a6eb5 0%, #0d4f8a 100%);
     border-radius: 8px 8px 0 0;
     padding: 28px 28px 24px;
-    margin-bottom: 0;
   }
-  .header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    color: #ffffff;
-    letter-spacing: 0.01em;
-  }
-  .header .sub {
-    font-size: 12px;
-    color: #a8d4f5;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: #fff; }
+  .header .sub { font-size: 12px; color: #a8d4f5; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
 
-  /* Cards */
-  .card {
-    background: #ffffff;
-    border: 1px solid #dde4ed;
-    border-top: none;
-    padding: 20px 24px;
-  }
+  .card { background: #fff; border: 1px solid #dde4ed; border-top: none; padding: 20px 24px; }
   .card:last-of-type { border-radius: 0 0 8px 8px; }
-  .card + .card { border-top: 1px solid #dde4ed; }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #5a7a9a;
-    margin-bottom: 10px;
-    display: block;
-  }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5a7a9a; margin-bottom: 10px; display: block; }
 
-  /* Toggle buttons */
-  .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
   .toggle {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: 2px solid #c8d8e8;
-    background: #f0f4f8;
-    color: #5a7a9a;
-    cursor: pointer;
-    transition: all 0.15s;
+    font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 7px 14px; border-radius: 4px; border: 2px solid #c8d8e8;
+    background: #f0f4f8; color: #5a7a9a; cursor: pointer; transition: all 0.15s;
   }
   .toggle:hover { border-color: #1a6eb5; color: #1a6eb5; }
-  .toggle.active { background: #1a6eb5; border-color: #1a6eb5; color: #ffffff; }
+  .toggle.active { background: #1a6eb5; border-color: #1a6eb5; color: #fff; }
+  .toggle.combo { border-color: #e8a020; color: #b07010; background: #fffaf0; }
+  .toggle.combo:hover { border-color: #e8a020; color: #e8a020; }
+  .toggle.combo.active { background: #e8a020; border-color: #e8a020; color: #fff; }
 
-  /* Checkbox */
+  .qty-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .qty-label { font-size: 13px; color: #5a7a9a; white-space: nowrap; }
+  .qty-input {
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    background: #f0f4f8; border: 2px solid #c8d8e8; border-radius: 4px;
+    color: #1a2332; padding: 6px 10px; width: 70px; outline: none; transition: border 0.15s; text-align: center;
+  }
+  .qty-input:focus { border-color: #1a6eb5; background: #fff; }
+
   .checkbox-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
   .checkbox-row input[type=checkbox] { width: 18px; height: 18px; accent-color: #1a6eb5; cursor: pointer; }
   .checkbox-label { font-size: 14px; color: #1a2332; }
   .checkbox-label strong { color: #1a6eb5; }
 
-  /* Inputs */
   .input-row { display: flex; gap: 16px; flex-wrap: wrap; }
   .input-group { flex: 1; min-width: 180px; }
   .input {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 14px;
-    background: #f0f4f8;
-    border: 2px solid #c8d8e8;
-    border-radius: 4px;
-    color: #1a2332;
-    padding: 8px 12px;
-    width: 100%;
-    outline: none;
-    transition: border 0.15s;
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    background: #f0f4f8; border: 2px solid #c8d8e8; border-radius: 4px;
+    color: #1a2332; padding: 8px 12px; width: 100%; outline: none; transition: border 0.15s;
   }
   .input:focus { border-color: #1a6eb5; background: #fff; }
   .input::placeholder { color: #9ab0c8; }
 
-  /* Summary */
-  .summary-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    color: #1a6eb5;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-  }
-  .summary-client {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 12px;
-    color: #7a9ab8;
-    font-style: italic;
-  }
-  .line-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 9px 0;
-    border-bottom: 1px solid #edf2f7;
-    font-size: 14px;
-  }
+  .summary-title { font-family: 'Playfair Display', serif; font-size: 17px; color: #1a6eb5; margin-bottom: 14px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .summary-client { font-family: 'Source Sans 3', sans-serif; font-size: 12px; color: #7a9ab8; font-style: italic; }
+  .line-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #edf2f7; font-size: 14px; }
   .line-item:last-of-type { border-bottom: none; }
   .line-item .desc { color: #3a5570; }
   .line-item .amt { font-weight: 600; color: #1a2332; }
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0 0;
-    margin-top: 8px;
-    border-top: 3px solid #1a6eb5;
-  }
+  .total-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 0; margin-top: 8px; border-top: 3px solid #1a6eb5; }
   .total-label { font-family: 'Playfair Display', serif; font-size: 20px; color: #1a2332; }
   .total-amount { font-family: 'Playfair Display', serif; font-size: 26px; color: #1a6eb5; }
   .empty { font-size: 13px; color: #9ab0c8; font-style: italic; text-align: center; padding: 16px 0; }
 
-  /* Print button */
+  .hint { font-size: 11px; color: #9ab0c8; margin-top: 8px; font-style: italic; }
+
   .print-btn {
-    display: block;
-    margin: 20px auto 0;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: #1a6eb5;
-    border: none;
-    color: #fff;
-    padding: 12px 32px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s;
+    display: block; margin: 20px auto 0;
+    font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: #1a6eb5; border: none; color: #fff;
+    padding: 12px 32px; border-radius: 4px; cursor: pointer; transition: background 0.15s;
   }
   .print-btn:hover { background: #0d4f8a; }
 
-  /* Print styles */
   @media print {
     body { background: white; padding: 0; }
     .header { background: #1a6eb5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-radius: 0; }
     .card { border: 1px solid #ccc; }
-    .toggle-group, .input, .no-print { display: none !important; }
-    .print-btn { display: none !important; }
+    .toggle-group, .qty-row, .input, .no-print, .print-btn, .hint { display: none !important; }
     .toggle.active { display: inline-block !important; background: #e8f0f8 !important; color: #1a2332 !important; border: 1px solid #aaa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
@@ -172,7 +101,6 @@
 <body>
 <div class="page">
 
-  <!-- Header -->
   <div class="header">
     <h1>ESAM Equipment Services</h1>
     <div class="sub">Job Estimator &mdash; <span id="today-date"></span></div>
@@ -194,11 +122,17 @@
 
   <!-- Machine Rental -->
   <div class="card">
-    <span class="section-label">Machine Rental</span>
+    <span class="section-label">Machine Rental (KX040)</span>
     <div class="toggle-group">
       <button class="toggle active" id="machine-none" onclick="setToggle('machine','none')">None</button>
-      <button class="toggle" id="machine-half" onclick="setToggle('machine','half')">Half Day &mdash; $150</button>
-      <button class="toggle" id="machine-day" onclick="setToggle('machine','day')">Full Day &mdash; $250</button>
+      <button class="toggle" id="machine-half" onclick="setToggle('machine','half')">Half Day — $150</button>
+      <button class="toggle" id="machine-day" onclick="setToggle('machine','day')">Full Day — $250</button>
+      <button class="toggle" id="machine-week" onclick="setToggle('machine','week')">Week — $1,000</button>
+    </div>
+    <div class="qty-row" id="machine-qty-row" style="display:none">
+      <span class="qty-label">Qty:</span>
+      <input class="qty-input" id="machineQty" type="number" min="1" step="1" value="1" oninput="update()">
+      <span class="qty-label" id="machine-qty-label"></span>
     </div>
   </div>
 
@@ -207,9 +141,31 @@
     <span class="section-label">Trailer Rental (on jobsite only)</span>
     <div class="toggle-group">
       <button class="toggle active" id="trailer-none" onclick="setToggle('trailer','none')">None</button>
-      <button class="toggle" id="trailer-half" onclick="setToggle('trailer','half')">Half Day &mdash; $60</button>
-      <button class="toggle" id="trailer-day" onclick="setToggle('trailer','day')">Full Day &mdash; $120</button>
+      <button class="toggle" id="trailer-half" onclick="setToggle('trailer','half')">Half Day — $60</button>
+      <button class="toggle" id="trailer-day" onclick="setToggle('trailer','day')">Full Day — $120</button>
+      <button class="toggle" id="trailer-week" onclick="setToggle('trailer','week')">Week — $500</button>
     </div>
+    <div class="qty-row" id="trailer-qty-row" style="display:none">
+      <span class="qty-label">Qty:</span>
+      <input class="qty-input" id="trailerQty" type="number" min="1" step="1" value="1" oninput="update()">
+      <span class="qty-label" id="trailer-qty-label"></span>
+    </div>
+  </div>
+
+  <!-- Combo Rates -->
+  <div class="card">
+    <span class="section-label">Combo Rate — Machine + Trailer Together</span>
+    <div class="toggle-group">
+      <button class="toggle combo active" id="combo-none" onclick="setToggle('combo','none')">None</button>
+      <button class="toggle combo" id="combo-day" onclick="setToggle('combo','day')">Combo Day — $350</button>
+      <button class="toggle combo" id="combo-week" onclick="setToggle('combo','week')">Combo Week — $1,400</button>
+    </div>
+    <div class="qty-row" id="combo-qty-row" style="display:none">
+      <span class="qty-label">Qty:</span>
+      <input class="qty-input" id="comboQty" type="number" min="1" step="1" value="1" oninput="update()">
+      <span class="qty-label" id="combo-qty-label"></span>
+    </div>
+    <div class="hint">Use combo instead of separate machine + trailer when both are going out together.</div>
   </div>
 
   <!-- Fuel & Wash -->
@@ -233,7 +189,7 @@
   </div>
 
   <!-- Summary -->
-  <div class="card" id="summary-card">
+  <div class="card">
     <div class="summary-title">
       Estimate Summary
       <span class="summary-client" id="summary-client"></span>
@@ -248,52 +204,75 @@
   <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
 
 </div>
-
 <script>
   const RATES = {
-    machine: { day: 250, half: 150 },
-    trailer: { day: 120, half: 60 },
-    fuel: 50,
-    opMin: 120,
-    opHr: 60,
-    driveHr: 30,
+    machine: { half: 150, day: 250, week: 1000 },
+    trailer: { half: 60, day: 120, week: 500 },
+    combo: { day: 350, week: 1400 },
+    fuel: 50, opMin: 120, opHr: 60, driveHr: 30,
   };
-
-  const state = { machine: 'none', trailer: 'none' };
+  const qtyLabels = {
+    machine: { half: 'half days', day: 'full days', week: 'weeks' },
+    trailer: { half: 'half days', day: 'full days', week: 'weeks' },
+    combo: { day: 'days', week: 'weeks' },
+  };
+  const state = { machine: 'none', trailer: 'none', combo: 'none' };
 
   document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   function setToggle(group, val) {
     state[group] = val;
-    ['none','half','day'].forEach(v => {
-      document.getElementById(`${group}-${v}`).classList.toggle('active', v === val);
-    });
+    const opts = group === 'combo' ? ['none','day','week'] : ['none','half','day','week'];
+    opts.forEach(v => document.getElementById(`${group}-${v}`).classList.toggle('active', v === val));
+    const qtyRow = document.getElementById(`${group}-qty-row`);
+    if (val === 'none') {
+      qtyRow.style.display = 'none';
+    } else {
+      qtyRow.style.display = 'flex';
+      document.getElementById(`${group}-qty-label`).textContent = qtyLabels[group][val];
+      document.getElementById(`${group}Qty`).value = 1;
+    }
     update();
   }
 
-  function fmt(n) {
-    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
+  function getQty(id) { return Math.max(1, parseInt(document.getElementById(id).value) || 1); }
+  function fmt(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
   function update() {
-    const machineRate = state.machine === 'day' ? RATES.machine.day : state.machine === 'half' ? RATES.machine.half : 0;
-    const trailerRate = state.trailer === 'day' ? RATES.trailer.day : state.trailer === 'half' ? RATES.trailer.half : 0;
-    const fuelRate = document.getElementById('fuelWash').checked ? RATES.fuel : 0;
-    const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
-    const driveHrs = parseFloat(document.getElementById('driveHours').value) || 0;
-    const opRate = opHrs > 0 ? Math.max(opHrs * RATES.opHr, RATES.opMin) : 0;
-    const driveRate = driveHrs > 0 ? driveHrs * RATES.driveHr : 0;
-
     const items = [];
-    if (machineRate) items.push({ label: `Machine Rental (${state.machine === 'day' ? 'Full Day' : 'Half Day'})`, amt: machineRate });
-    if (trailerRate) items.push({ label: `Trailer Rental (${state.trailer === 'day' ? 'Full Day' : 'Half Day'})`, amt: trailerRate });
-    if (fuelRate) items.push({ label: 'Mini X Fuel & Wash', amt: fuelRate });
-    if (opRate) items.push({ label: `Operator (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
-    if (driveRate) items.push({ label: `Delivery / Pickup (${driveHrs} hr${driveHrs !== 1 ? 's' : ''} drive time)`, amt: driveRate });
+
+    if (state.combo !== 'none') {
+      const qty = getQty('comboQty');
+      const rate = RATES.combo[state.combo];
+      const unit = state.combo === 'week' ? 'week' : 'day';
+      items.push({ label: `Combo Machine + Trailer (${qty} ${qty === 1 ? unit : unit + 's'})`, amt: rate * qty });
+    } else {
+      if (state.machine !== 'none') {
+        const qty = getQty('machineQty');
+        items.push({ label: `Machine Rental (${qty} ${qtyLabels.machine[state.machine]})`, amt: RATES.machine[state.machine] * qty });
+      }
+      if (state.trailer !== 'none') {
+        const qty = getQty('trailerQty');
+        items.push({ label: `Trailer Rental (${qty} ${qtyLabels.trailer[state.trailer]})`, amt: RATES.trailer[state.trailer] * qty });
+      }
+    }
+
+    if (document.getElementById('fuelWash').checked)
+      items.push({ label: 'Mini X Fuel & Wash', amt: RATES.fuel });
+
+    const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
+    if (opHrs > 0) {
+      const opRate = Math.max(opHrs * RATES.opHr, RATES.opMin);
+      items.push({ label: `Operator (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
+    }
+
+    const driveHrs = parseFloat(document.getElementById('driveHours').value) || 0;
+    if (driveHrs > 0)
+      items.push({ label: `Delivery / Pickup (${driveHrs} hr${driveHrs !== 1 ? 's' : ''} drive time)`, amt: driveHrs * RATES.driveHr });
 
     const total = items.reduce((s, i) => s + i.amt, 0);
-
     const container = document.getElementById('line-items');
+
     if (items.length === 0) {
       container.innerHTML = '<div class="empty">No line items selected yet.</div>';
       document.getElementById('total-row').style.display = 'none';
