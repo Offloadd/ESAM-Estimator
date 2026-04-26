@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESAM Estimator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    padding: 32px 16px;
+    color: #1a2332;
+  }
+
+  .page { max-width: 580px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a6eb5 0%, #0d4f8a 100%);
+    border-radius: 8px 8px 0 0;
+    padding: 28px 28px 24px;
+    margin-bottom: 0;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+  }
+  .header .sub {
+    font-size: 12px;
+    color: #a8d4f5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Cards */
+  .card {
+    background: #ffffff;
+    border: 1px solid #dde4ed;
+    border-top: none;
+    padding: 20px 24px;
+  }
+  .card:last-of-type { border-radius: 0 0 8px 8px; }
+  .card + .card { border-top: 1px solid #dde4ed; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5a7a9a;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  /* Toggle buttons */
+  .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toggle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 2px solid #c8d8e8;
+    background: #f0f4f8;
+    color: #5a7a9a;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .toggle:hover { border-color: #1a6eb5; color: #1a6eb5; }
+  .toggle.active { background: #1a6eb5; border-color: #1a6eb5; color: #ffffff; }
+
+  /* Checkbox */
+  .checkbox-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .checkbox-row input[type=checkbox] { width: 18px; height: 18px; accent-color: #1a6eb5; cursor: pointer; }
+  .checkbox-label { font-size: 14px; color: #1a2332; }
+  .checkbox-label strong { color: #1a6eb5; }
+
+  /* Inputs */
+  .input-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .input-group { flex: 1; min-width: 180px; }
+  .input {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    background: #f0f4f8;
+    border: 2px solid #c8d8e8;
+    border-radius: 4px;
+    color: #1a2332;
+    padding: 8px 12px;
+    width: 100%;
+    outline: none;
+    transition: border 0.15s;
+  }
+  .input:focus { border-color: #1a6eb5; background: #fff; }
+  .input::placeholder { color: #9ab0c8; }
+
+  /* Summary */
+  .summary-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: #1a6eb5;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .summary-client {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    color: #7a9ab8;
+    font-style: italic;
+  }
+  .line-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+  }
+  .line-item:last-of-type { border-bottom: none; }
+  .line-item .desc { color: #3a5570; }
+  .line-item .amt { font-weight: 600; color: #1a2332; }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0 0;
+    margin-top: 8px;
+    border-top: 3px solid #1a6eb5;
+  }
+  .total-label { font-family: 'Playfair Display', serif; font-size: 20px; color: #1a2332; }
+  .total-amount { font-family: 'Playfair Display', serif; font-size: 26px; color: #1a6eb5; }
+  .empty { font-size: 13px; color: #9ab0c8; font-style: italic; text-align: center; padding: 16px 0; }
+
+  /* Print button */
+  .print-btn {
+    display: block;
+    margin: 20px auto 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: #1a6eb5;
+    border: none;
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .print-btn:hover { background: #0d4f8a; }
+
+  /* Print styles */
+  @media print {
+    body { background: white; padding: 0; }
+    .header { background: #1a6eb5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-radius: 0; }
+    .card { border: 1px solid #ccc; }
+    .toggle-group, .input, .no-print { display: none !important; }
+    .print-btn { display: none !important; }
+    .toggle.active { display: inline-block !important; background: #e8f0f8 !important; color: #1a2332 !important; border: 1px solid #aaa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>ESAM Equipment Services</h1>
+    <div class="sub">Job Estimator &mdash; <span id="today-date"></span></div>
+  </div>
+
+  <!-- Client / Job -->
+  <div class="card no-print">
+    <div class="input-row">
+      <div class="input-group">
+        <span class="section-label">Client Name</span>
+        <input class="input" id="clientName" type="text" placeholder="Optional" oninput="update()">
+      </div>
+      <div class="input-group">
+        <span class="section-label">Job Description</span>
+        <input class="input" id="jobDesc" type="text" placeholder="Optional" oninput="update()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Machine Rental -->
+  <div class="card">
+    <span class="section-label">Machine Rental</span>
+    <div class="toggle-group">
+      <button class="toggle active" id="machine-none" onclick="setToggle('machine','none')">None</button>
+      <button class="toggle" id="machine-half" onclick="setToggle('machine','half')">Half Day &mdash; $150</button>
+      <button class="toggle" id="machine-day" onclick="setToggle('machine','day')">Full Day &mdash; $250</button>
+    </div>
+  </div>
+
+  <!-- Trailer Rental -->
+  <div class="card">
+    <span class="section-label">Trailer Rental (on jobsite only)</span>
+    <div class="toggle-group">
+      <button class="toggle active" id="trailer-none" onclick="setToggle('trailer','none')">None</button>
+      <button class="toggle" id="trailer-half" onclick="setToggle('trailer','half')">Half Day &mdash; $60</button>
+      <button class="toggle" id="trailer-day" onclick="setToggle('trailer','day')">Full Day &mdash; $120</button>
+    </div>
+  </div>
+
+  <!-- Fuel & Wash -->
+  <div class="card">
+    <label class="checkbox-row">
+      <input type="checkbox" id="fuelWash" onchange="update()">
+      <span class="checkbox-label">Mini X Fuel &amp; Wash &mdash; <strong>$50/day flat</strong></span>
+    </label>
+  </div>
+
+  <!-- Operator Hours -->
+  <div class="card">
+    <span class="section-label">Operator Hours</span>
+    <input class="input" id="opHours" type="number" min="0" step="0.5" placeholder="$60/hr — $120 minimum" style="max-width:260px" oninput="update()">
+  </div>
+
+  <!-- Drive Time -->
+  <div class="card">
+    <span class="section-label">Delivery / Pickup — Total Drive Hours (both ways)</span>
+    <input class="input" id="driveHours" type="number" min="0" step="0.5" placeholder="$30/hr" style="max-width:260px" oninput="update()">
+  </div>
+
+  <!-- Summary -->
+  <div class="card" id="summary-card">
+    <div class="summary-title">
+      Estimate Summary
+      <span class="summary-client" id="summary-client"></span>
+    </div>
+    <div id="line-items"><div class="empty">No line items selected yet.</div></div>
+    <div class="total-row" id="total-row" style="display:none">
+      <span class="total-label">Total</span>
+      <span class="total-amount" id="total-amount">$0.00</span>
+    </div>
+  </div>
+
+  <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+</div>
+
+<script>
+  const RATES = {
+    machine: { day: 250, half: 150 },
+    trailer: { day: 120, half: 60 },
+    fuel: 50,
+    opMin: 120,
+    opHr: 60,
+    driveHr: 30,
+  };
+
+  const state = { machine: 'none', trailer: 'none' };
+
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  function setToggle(group, val) {
+    state[group] = val;
+    ['none','half','day'].forEach(v => {
+      document.getElementById(`${group}-${v}`).classList.toggle('active', v === val);
+    });
+    update();
+  }
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function update() {
+    const machineRate = state.machine === 'day' ? RATES.machine.day : state.machine === 'half' ? RATES.machine.half : 0;
+    const trailerRate = state.trailer === 'day' ? RATES.trailer.day : state.trailer === 'half' ? RATES.trailer.half : 0;
+    const fuelRate = document.getElementById('fuelWash').checked ? RATES.fuel : 0;
+    const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
+    const driveHrs = parseFloat(document.getElementById('driveHours').value) || 0;
+    const opRate = opHrs > 0 ? Math.max(opHrs * RATES.opHr, RATES.opMin) : 0;
+    const driveRate = driveHrs > 0 ? driveHrs * RATES.driveHr : 0;
+
+    const items = [];
+    if (machineRate) items.push({ label: `Machine Rental (${state.machine === 'day' ? 'Full Day' : 'Half Day'})`, amt: machineRate });
+    if (trailerRate) items.push({ label: `Trailer Rental (${state.trailer === 'day' ? 'Full Day' : 'Half Day'})`, amt: trailerRate });
+    if (fuelRate) items.push({ label: 'Mini X Fuel & Wash', amt: fuelRate });
+    if (opRate) items.push({ label: `Operator (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
+    if (driveRate) items.push({ label: `Delivery / Pickup (${driveHrs} hr${driveHrs !== 1 ? 's' : ''} drive time)`, amt: driveRate });
+
+    const total = items.reduce((s, i) => s + i.amt, 0);
+
+    const container = document.getElementById('line-items');
+    if (items.length === 0) {
+      container.innerHTML = '<div class="empty">No line items selected yet.</div>';
+      document.getElementById('total-row').style.display = 'none';
+    } else {
+      container.innerHTML = items.map(i =>
+        `<div class="line-item"><span class="desc">${i.label}</span><span class="amt">${fmt(i.amt)}</span></div>`
+      ).join('');
+      document.getElementById('total-row').style.display = 'flex';
+      document.getElementById('total-amount').textContent = fmt(total);
+    }
+
+    const client = document.getElementById('clientName').value.trim();
+    const job = document.getElementById('jobDesc').value.trim();
+    document.getElementById('summary-client').textContent = [client, job].filter(Boolean).join(' — ');
+  }
+</script>
+</body>
+</html>
