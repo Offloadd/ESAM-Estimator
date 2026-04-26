@@ -176,10 +176,22 @@
     </label>
   </div>
 
-  <!-- Operator Hours -->
+  <!-- Operator / Labor -->
   <div class="card">
-    <span class="section-label">Operator Hours</span>
-    <input class="input" id="opHours" type="number" min="0" step="0.5" placeholder="$60/hr — $120 minimum" style="max-width:260px" oninput="update()">
+    <span class="section-label">Operator / Labor</span>
+    <div class="toggle-group">
+      <button class="toggle active" id="op-none" onclick="setOpMode('none')">None</button>
+      <button class="toggle" id="op-hours" onclick="setOpMode('hours')">By Hours — $60/hr</button>
+      <button class="toggle" id="op-minimums" onclick="setOpMode('minimums')">By Minimums — $120 each</button>
+    </div>
+    <div id="op-hours-row" style="display:none">
+      <input class="input" id="opHours" type="number" min="0" step="0.5" placeholder="Enter hours" style="max-width:180px" oninput="update()">
+    </div>
+    <div class="qty-row" id="op-minimums-row" style="display:none">
+      <span class="qty-label">Qty:</span>
+      <input class="qty-input" id="opMinQty" type="number" min="1" step="1" value="1" oninput="update()">
+      <span class="qty-label">minimums ($120 each)</span>
+    </div>
   </div>
 
   <!-- Drive Time -->
@@ -216,9 +228,18 @@
     trailer: { half: 'half days', day: 'full days', week: 'weeks' },
     combo: { day: 'days', week: 'weeks' },
   };
-  const state = { machine: 'none', trailer: 'none', combo: 'none' };
+  const state = { machine: 'none', trailer: 'none', combo: 'none', op: 'none' };
 
   document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  function setOpMode(val) {
+    state.op = val;
+    ['none','hours','minimums'].forEach(v => document.getElementById(`op-${v}`).classList.toggle('active', v === val));
+    document.getElementById('op-hours-row').style.display = val === 'hours' ? 'block' : 'none';
+    document.getElementById('op-minimums-row').style.display = val === 'minimums' ? 'flex' : 'none';
+    update();
+  }
+
 
   function setToggle(group, val) {
     state[group] = val;
@@ -260,10 +281,15 @@
     if (document.getElementById('fuelWash').checked)
       items.push({ label: 'Mini X Fuel & Wash', amt: RATES.fuel });
 
-    const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
-    if (opHrs > 0) {
-      const opRate = Math.max(opHrs * RATES.opHr, RATES.opMin);
-      items.push({ label: `Operator (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
+    if (state.op === 'hours') {
+      const opHrs = parseFloat(document.getElementById('opHours').value) || 0;
+      if (opHrs > 0) {
+        const opRate = Math.max(opHrs * RATES.opHr, RATES.opMin);
+        items.push({ label: `Operator/Labor (${opHrs} hr${opHrs !== 1 ? 's' : ''}${opHrs * RATES.opHr < RATES.opMin ? ' — minimum applied' : ''})`, amt: opRate });
+      }
+    } else if (state.op === 'minimums') {
+      const qty = getQty('opMinQty');
+      items.push({ label: `Operator/Labor (${qty} day minimum${qty !== 1 ? 's' : ''} × $${RATES.opMin})`, amt: qty * RATES.opMin });
     }
 
     const driveHrs = parseFloat(document.getElementById('driveHours').value) || 0;
